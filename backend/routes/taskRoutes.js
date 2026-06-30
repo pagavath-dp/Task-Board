@@ -39,7 +39,14 @@ router.post('/', async (req, res) => {
        VALUES ($1,$2,$3,$4,$5) RETURNING *`,
       [title, description || null, status, req.user.id, position]
     );
-    res.status(201).json(result.rows[0]);
+    const fullTask = await pool.query(
+      `SELECT t.*, u.name AS creator_name
+       FROM tasks t
+       LEFT JOIN users u ON t.created_by = u.id
+       WHERE t.id = $1`,
+      [result.rows[0].id]
+    );
+    res.status(201).json(fullTask.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -62,7 +69,14 @@ router.patch('/:id', async (req, res) => {
       [title, description, status, position, id]
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Task not found' });
-    res.json(result.rows[0]);
+    const fullTask = await pool.query(
+      `SELECT t.*, u.name AS creator_name
+       FROM tasks t
+       LEFT JOIN users u ON t.created_by = u.id
+       WHERE t.id = $1`,
+      [result.rows[0].id]
+    );
+    res.json(fullTask.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
