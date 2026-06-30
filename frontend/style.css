@@ -1,0 +1,36 @@
+.column { display: flex; flex-direction: column; }
+
+.task-card {
+  position: relative;
+  background: #1C1C19;
+  border: 1px solid rgba(237,234,226,0.1);
+  border-left: 3px solid var(--card-accent, #8B92A3);
+  padding: 0.85rem 1rem 0.85rem 1.1rem;
+  cursor: grab;
+}
+
+.task-card::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--card-accent, #8B92A3);
+}
+
+.tab-btn { background: transparent; color: rgba(237,234,226,0.4); cursor: pointer; border-top: none; border-right: none; border-bottom: none; }
+.tab-btn.tab-active { background: #EDEAE2; color: #0E0E0D; }
+
+.task-card:hover { border-color: rgba(237,234,226,0.22); }
+.task-card.dragging { opacity: 0.4; cursor: grabbing; }
+.task-list.drag-over { background: rgba(224,129,72,0.07); outline: 1px dashed rgba(224,129,72,0.5); outline-offset: -4px; }
+
+.card-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(237,234,226,0.35); }
+.card-title { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.92rem; color: #EDEAE2; margin: 0.2rem 0 0.3rem; }
+.card-desc { font-size: 0.8rem; color: rgba(237,234,226,0.55); line-height: 1.45; margin-bottom: 0.5rem; }
+.card-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: rgba(237,234,226,0.35); border-top: 1px dashed rgba(237,234,226,0.12); padding-top: 0.4rem; }
+
+.modal-overlay.flex { display: flex; }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskBoard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0E0E0D',
+            panel: '#161614',
+            paper: '#EDEAE2',
+            rust: '#E08148',
+            slate: '#8B92A3',
+            forest: '#5C9777',
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-ink text-paper font-body min-h-screen">
+
+  <header class="flex justify-between items-center px-8 py-4 border-b border-paper/10 bg-ink sticky top-0 z-20">
+    <div class="flex items-center gap-3">
+      <span class="font-display font-bold text-lg tracking-tight">task<span class="text-rust">/</span>board</span>
+      <span class="font-mono text-[11px] text-forest border border-forest/30 px-1.5 py-0.5">● live</span>
+    </div>
+    <div class="flex items-center gap-4 text-sm">
+      <span id="userName" class="font-mono text-paper/60"></span>
+      <button id="logoutBtn" class="font-mono text-xs border border-paper/20 px-3 py-1.5 hover:border-rust hover:text-rust transition-colors">log out</button>
+    </div>
+  </header>
+
+  <div class="flex items-center gap-4 px-8 py-5">
+    <button id="newTaskBtn" class="bg-paper text-ink font-mono text-sm px-4 py-2 hover:bg-rust hover:text-ink transition-colors">+ new ticket</button>
+    <span id="onlineNotice" class="font-mono text-xs text-paper/40 italic"></span>
+  </div>
+
+  <div class="board grid grid-cols-1 md:grid-cols-3 gap-5 px-8 pb-10">
+    <div class="column border border-paper/10 bg-panel min-h-[420px]" id="col-todo" data-status="todo">
+      <div class="col-header flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-paper/50 px-4 py-3 border-b border-l-4 border-slate border-paper/10">to do</div>
+      <div class="task-list flex flex-col gap-2.5 p-3 flex-1" id="list-todo"></div>
+    </div>
+    <div class="column border border-paper/10 bg-panel min-h-[420px]" id="col-inprogress" data-status="inprogress">
+      <div class="col-header flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-paper/50 px-4 py-3 border-b border-l-4 border-rust border-paper/10">in progress</div>
+      <div class="task-list flex flex-col gap-2.5 p-3 flex-1" id="list-inprogress"></div>
+    </div>
+    <div class="column border border-paper/10 bg-panel min-h-[420px]" id="col-done" data-status="done">
+      <div class="col-header flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-paper/50 px-4 py-3 border-b border-l-4 border-forest border-paper/10">done</div>
+      <div class="task-list flex flex-col gap-2.5 p-3 flex-1" id="list-done"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay fixed inset-0 bg-black/70 hidden items-center justify-center z-50" id="modalOverlay">
+    <div class="modal bg-panel border border-paper/15 w-full max-w-md p-7 mx-4">
+      <h2 id="modalTitle" class="font-display font-bold text-lg mb-5 text-paper">New ticket</h2>
+      <input type="text" id="taskTitle" placeholder="Title" class="w-full border border-paper/20 bg-ink text-paper px-3 py-2.5 mb-3 font-body text-sm focus:outline-none focus:border-rust placeholder:text-paper/30" />
+      <textarea id="taskDesc" placeholder="Description (optional)" class="w-full border border-paper/20 bg-ink text-paper px-3 py-2.5 mb-3 font-body text-sm h-24 resize-y focus:outline-none focus:border-rust placeholder:text-paper/30"></textarea>
+      <select id="taskStatus" class="w-full border border-paper/20 bg-ink text-paper px-3 py-2.5 mb-5 font-mono text-sm focus:outline-none focus:border-rust">
+        <option value="todo">To do</option>
+        <option value="inprogress">In progress</option>
+        <option value="done">Done</option>
+      </select>
+      <div class="modal-actions flex gap-2.5">
+        <button id="saveTaskBtn" class="bg-paper text-ink font-mono text-sm px-4 py-2 hover:bg-rust transition-colors">save</button>
+        <button id="deleteTaskBtn" class="hidden font-mono text-sm px-4 py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-ink transition-colors">delete</button>
+        <button id="cancelTaskBtn" class="font-mono text-sm px-4 py-2 border border-paper/20 text-paper/60 hover:border-paper/40 transition-colors">cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

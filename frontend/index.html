@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskBoard — Sign in</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0E0E0D',
+            panel: '#161614',
+            paper: '#EDEAE2',
+            rust: '#E08148',
+            slate: '#8B92A3',
+            forest: '#5C9777',
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-ink text-paper font-body min-h-screen flex items-center justify-center px-4">
+
+  <div class="w-full max-w-sm">
+
+    <div class="flex items-center gap-2 mb-8 justify-center">
+      <span class="font-display font-bold text-2xl tracking-tight">task<span class="text-rust">/</span>board</span>
+    </div>
+
+    <div class="border border-paper/15 bg-panel p-7">
+      <p class="font-mono text-xs text-paper/40 mb-6">// real-time kanban, synced across every tab</p>
+
+      <div class="flex border border-paper/15 mb-6">
+        <button id="loginTab" class="tab-btn flex-1 font-mono text-xs uppercase tracking-wide py-2.5 transition-colors">login</button>
+        <button id="registerTab" class="tab-btn flex-1 font-mono text-xs uppercase tracking-wide py-2.5 transition-colors border-l border-paper/15">register</button>
+      </div>
+
+      <form id="authForm">
+        <div id="nameField" class="hidden">
+          <input type="text" id="name" placeholder="Full name" class="w-full border border-paper/20 bg-ink text-paper px-3 py-2.5 mb-3 font-body text-sm focus:outline-none focus:border-rust placeholder:text-paper/30" />
+        </div>
+        <input type="email" id="email" placeholder="Email" required class="w-full border border-paper/20 bg-ink text-paper px-3 py-2.5 mb-3 font-body text-sm focus:outline-none focus:border-rust placeholder:text-paper/30" />
+        <input type="password" id="password" placeholder="Password" required class="w-full border border-paper/20 bg-ink text-paper px-3 py-2.5 mb-4 font-body text-sm focus:outline-none focus:border-rust placeholder:text-paper/30" />
+        <button type="submit" id="submitBtn" class="w-full bg-paper text-ink font-mono text-sm py-2.5 hover:bg-rust transition-colors">login</button>
+        <p class="error-msg font-mono text-xs text-red-500 mt-3 min-h-[1.2em]" id="authError"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let mode = 'login';
+
+    document.getElementById('loginTab').onclick = () => setMode('login');
+    document.getElementById('registerTab').onclick = () => setMode('register');
+
+    function setMode(m) {
+      mode = m;
+      document.getElementById('nameField').classList.toggle('hidden', m !== 'register');
+      document.getElementById('submitBtn').textContent = m === 'login' ? 'login' : 'create account';
+      document.getElementById('loginTab').classList.toggle('tab-active', m === 'login');
+      document.getElementById('registerTab').classList.toggle('tab-active', m === 'register');
+      document.getElementById('authError').textContent = '';
+    }
+    setMode('login');
+
+    document.getElementById('authForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value;
+
+      const endpoint = `/api/auth/${mode}`;
+      const body = mode === 'login' ? { email, password } : { name, email, password };
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = '/board';
+      } catch (err) {
+        document.getElementById('authError').textContent = err.message;
+      }
+    };
+
+    if (localStorage.getItem('token')) window.location.href = '/board';
+  </script>
+</body>
+</html>
