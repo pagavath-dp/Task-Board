@@ -163,11 +163,6 @@ function closeModal() {
   editingTaskId = null;
 }
 
-function closeModal() {
-  document.getElementById('modalOverlay').style.display = 'none';
-  editingTaskId = null;
-}
-
 document.getElementById('saveTaskBtn').onclick = async () => {
   const title = document.getElementById('taskTitle').value.trim();
   if (!title) return alert('Title is required');
