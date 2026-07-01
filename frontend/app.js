@@ -3,14 +3,20 @@ const token = localStorage.getItem('token');
 const user = JSON.parse(localStorage.getItem('user') || 'null');
 if (!token || !user) window.location.href = '/';
 
+// ── Socket.io ──────────────────────────────────────────────
+const socket = io({ auth: { token } });
+const params = new URLSearchParams(window.location.search);
+const teamId = params.get('team_id') ? parseInt(params.get('team_id')) : null;
+
 document.getElementById('userName').textContent = user.name;
 document.getElementById('logoutBtn').onclick = () => {
   localStorage.clear();
   window.location.href = '/';
 };
 
-// ── Socket.io ──────────────────────────────────────────────
-const socket = io({ auth: { token } });
+socket.on('connect', () => {
+  socket.emit('board:join', { teamId });
+});
 
 socket.on('connect_error', (err) => {
   if (err.message === 'Invalid token' || err.message === 'Authentication required') {
@@ -37,9 +43,24 @@ const api = async (method, path, body) => {
   return res.json();
 };
 
+async function loadBoardLabel() {
+  if (!teamId) {
+    document.getElementById('boardLabel').textContent = 'personal board';
+    return;
+  }
+  try {
+    const teams = await api('GET', '/api/teams');
+    const team = teams.find(t => t.id === teamId);
+    document.getElementById('boardLabel').textContent = team ? `${team.name}` : 'team board';
+  } catch {
+    document.getElementById('boardLabel').textContent = 'team board';
+  }
+}
+
 // ── Load tasks ─────────────────────────────────────────────
 async function loadTasks() {
-  tasks = await api('GET', '/api/tasks');
+  const url = teamId ? `/api/tasks?team_id=${teamId}` : '/api/tasks';
+  tasks = await api('GET', url);
   renderBoard();
 }
 
@@ -178,7 +199,7 @@ document.getElementById('saveTaskBtn').onclick = async () => {
     if (idx !== -1) tasks[idx] = { ...tasks[idx], ...updated };
     socket.emit('task:updated', updated);
   } else {
-    const created = await api('POST', '/api/tasks', body);
+    const created = await api('POST', '/api/tasks', { ...body, team_id: teamId });
     tasks.push(created);
     socket.emit('task:created', created);
   }
@@ -223,3 +244,4 @@ function showNotice(msg) {
 
 // ── Init ───────────────────────────────────────────────────
 loadTasks();
+loadBoardLabel();

@@ -33,15 +33,17 @@
 <body class="bg-ink text-paper font-body min-h-screen">
 
   <header class="flex justify-between items-center px-8 py-4 border-b border-paper/10 bg-ink sticky top-0 z-20">
-    <div class="flex items-center gap-3">
-      <span class="font-display font-bold text-lg tracking-tight">task<span class="text-rust">/</span>board</span>
-      <span class="font-mono text-[11px] text-forest border border-forest/30 px-1.5 py-0.5">● live</span>
-    </div>
-    <div class="flex items-center gap-4 text-sm">
-      <span id="userName" class="font-mono text-paper/60"></span>
-      <button id="logoutBtn" class="font-mono text-xs border border-paper/20 px-3 py-1.5 hover:border-rust hover:text-rust transition-colors">log out</button>
-    </div>
-  </header>
+  <div class="flex items-center gap-3">
+    <span class="font-display font-bold text-lg tracking-tight">task<span class="text-rust">/</span>board</span>
+    <span class="font-mono text-[11px] text-forest border border-forest/30 px-1.5 py-0.5">● live</span>
+    <span id="boardLabel" class="font-mono text-[11px] text-paper/40 border border-paper/15 px-1.5 py-0.5"></span>
+  </div>
+  <div class="flex items-center gap-4 text-sm">
+    <span id="userName" class="font-mono text-paper/60"></span>
+    <a href="/boardSelection.html" class="font-mono text-xs border border-paper/20 px-3 py-1.5 hover:border-rust hover:text-rust transition-colors">switch board</a>
+    <button id="logoutBtn" class="font-mono text-xs border border-paper/20 px-3 py-1.5 hover:border-rust hover:text-rust transition-colors">log out</button>
+  </div>
+</header>
 
   <div class="flex items-center gap-4 px-8 py-5">
     <button id="newTaskBtn" class="bg-paper text-ink font-mono text-sm px-4 py-2 hover:bg-rust hover:text-ink transition-colors">+ new ticket</button>

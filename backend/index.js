@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
+import teamRoutes from './routes/teamRoutes.js';
 import { initSocket } from './socketHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,9 +25,10 @@ app.use(express.static(frontendPath));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/teams', teamRoutes);
 
-app.get('/board', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'board.html'));
+app.get('/boardSelection.html', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'boardSelection.html'));
 });
 
 initSocket(io);

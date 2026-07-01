@@ -94,13 +94,13 @@
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/board';
+        window.location.href = '/boardSelection.html';
       } catch (err) {
         document.getElementById('authError').textContent = err.message;
       }
     };
 
-    if (localStorage.getItem('token')) window.location.href = '/board';
+    if (localStorage.getItem('token')) window.location.href = '/boardSelection.html';
   </script>
 </body>
 </html>

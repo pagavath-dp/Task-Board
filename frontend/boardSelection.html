@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskBoard — Choose your board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#0E0E0D', panel: '#161614', paper: '#EDEAE2',
+            rust: '#E08148', slate: '#8B92A3', forest: '#5C9777',
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-ink text-paper font-body min-h-screen">
+
+  <header class="flex justify-between items-center px-8 py-4 border-b border-paper/10">
+    <span class="font-display font-bold text-lg tracking-tight">task<span class="text-rust">/</span>board</span>
+    <button id="logoutBtn" class="font-mono text-xs border border-paper/20 px-3 py-1.5 hover:border-rust hover:text-rust transition-colors">log out</button>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-14">
+    <h1 class="font-display font-bold text-3xl text-center mb-10">Choose your board</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
+
+      <div class="border border-paper/15 bg-panel p-6 flex flex-col">
+        <h2 class="font-display font-bold text-lg mb-2">Personal Board</h2>
+        <p class="text-sm text-paper/55 mb-6 flex-1">Your private space for personal tasks. Only you can see and manage these tasks.</p>
+        <button id="openPersonalBtn" class="bg-paper text-ink font-mono text-sm py-2.5 hover:bg-rust transition-colors">Open Personal Board</button>
+      </div>
+
+      <div class="border border-paper/15 bg-panel p-6 flex flex-col">
+        <h2 class="font-display font-bold text-lg mb-2">Join a Team</h2>
+        <p class="text-sm text-paper/55 mb-6 flex-1">Enter a team's 8-character join code to access a shared team board.</p>
+        <div class="flex gap-2">
+          <input id="joinCodeInput" type="text" placeholder="Join code" maxlength="8"
+            class="flex-1 min-w-0 border border-paper/20 bg-ink text-paper px-3 py-2.5 font-mono text-sm uppercase focus:outline-none focus:border-rust placeholder:text-paper/30 placeholder:normal-case" />
+          <button id="joinTeamBtn" class="bg-paper text-ink font-mono text-sm px-4 hover:bg-rust transition-colors shrink-0">Join</button>
+        </div>
+        <p id="joinError" class="font-mono text-xs text-red-500 mt-2 min-h-[1.2em]"></p>
+      </div>
+
+      <div class="border border-paper/15 bg-panel p-6 flex flex-col">
+        <h2 class="font-display font-bold text-lg mb-2">Create a Team</h2>
+        <p class="text-sm text-paper/55 mb-6 flex-1">Create a new team board and invite others with a unique join code.</p>
+        <div class="flex gap-2">
+          <input id="newTeamInput" type="text" placeholder="New team name"
+            class="flex-1 min-w-0 border border-paper/20 bg-ink text-paper px-3 py-2.5 font-body text-sm focus:outline-none focus:border-rust placeholder:text-paper/30" />
+          <button id="createTeamBtn" class="bg-paper text-ink font-mono text-sm px-4 hover:bg-rust transition-colors shrink-0">Create</button>
+        </div>
+        <p id="createError" class="font-mono text-xs text-red-500 mt-2 min-h-[1.2em]"></p>
+      </div>
+
+    </div>
+
+    <h3 class="font-display font-bold text-xl text-center mb-5">Or select a team board</h3>
+    <div id="teamList" class="flex flex-col gap-2.5">
+      <h3 class="font-display font-bold text-xl text-center mb-5">Or select a team board</h3>
+      <div id="teamList" class="flex flex-col gap-2.5"></div>
+    </div>
+  </main>
+
+  <script src="boardSelection.js"></script>
+</body>
+</html>
