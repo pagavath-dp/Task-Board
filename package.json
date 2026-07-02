@@ -8,7 +8,15 @@
     "start": "node --env-file=.env backend/index.js",
     "dev": "node --watch --env-file=.env backend/index.js"
   },
-  "keywords": ["kanban", "real-time", "websocket", "socket.io", "postgresql", "nodejs", "jwt"],
+  "keywords": [
+    "kanban",
+    "real-time",
+    "websocket",
+    "socket.io",
+    "postgresql",
+    "nodejs",
+    "jwt"
+  ],
   "author": "Pagavath D P",
   "license": "ISC",
   "type": "module",
@@ -19,5 +27,8 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.21.0",
     "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.3"
   }
 }
