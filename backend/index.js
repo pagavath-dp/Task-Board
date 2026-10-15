@@ -34,4 +34,4 @@ app.get('/boardSelection.html', (req, res) => {
 initSocket(io);
 
 const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+httpServer.listen(PORT, "0.0.0.0", () => { console.log(`Server running on port ${PORT}`); });
