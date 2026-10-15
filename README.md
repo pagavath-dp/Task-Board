@@ -2,7 +2,7 @@
 
 A real-time collaborative Kanban board with JWT authentication, private personal boards, and team boards joined via an 8-character invite code. Built with Node.js, Socket.io, and PostgreSQL.
 
-**Live demo:** [https://task-board-production-fc2c.up.railway.app](https://task-board-pe9z.onrender.com/)
+**Live demo:** https://task-board-pe9z.onrender.com/
 
 ---
 
